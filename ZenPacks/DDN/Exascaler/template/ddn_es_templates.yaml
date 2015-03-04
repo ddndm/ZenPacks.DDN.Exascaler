@@ -1,0 +1,107 @@
+/Storage/DDN/Exascaler/MetaDataServer:
+    # Osp component level metrics definition
+    description: Performance Template for gathering metrics related to Exascaler MetaData Server 
+    targetPythonClass: ZenPacks.DDN.Exascaler.MDS
+
+    datasources:
+        fs_counters:
+            type: Python
+            cycletime: 600
+            plugin_classname: ZenPacks.DDN.Exascaler.dsplugin.MdsPlugin
+            component: ${here/id}
+            eventKey: /perf/ExascalerMds
+            eventClass: /Perf
+            enabled: True
+            severity: Warning
+
+            datapoints:
+                Open : GAUGE
+                ReqWaittime: GAUGE
+                Setattr : GAUGE
+                Statfs: GAUGE
+                ReqActive: GAUGE
+                Rmdir : GAUGE
+                Link: GAUGE
+                Close: GAUGE
+                Mkdir : GAUGE
+                Rename: GAUGE
+                Unlink: GAUGE
+                Getattr: GAUGE
+                ReqQdepth: GAUGE
+                MetaOps: GAUGE
+                Mknod: GAUGE
+
+    graphs:
+        MetaOps:
+            units: total number of meta operations
+            graphpoints:
+                Open : 
+                    dpName: fs_counters_Open
+                ReqWaittime : 
+                    dpName: fs_counters_ReqWaittime
+                Setattr : 
+                    dpName: fs_counters_Setattr
+                Statfs : 
+                    dpName: fs_counters_Statfs
+                ReqActive : 
+                    dpName: fs_counters_ReqActive
+                Rmdir : 
+                    dpName: fs_counters_Rmdir
+                Link : 
+                    dpName: fs_counters_Link
+                Close : 
+                    dpName: fs_counters_Close
+                Mkdir : 
+                    dpName: fs_counters_Mkdir
+                Rename : 
+                    dpName: fs_counters_Rename
+                Unlink : 
+                    dpName: fs_counters_Unlink
+                Getattr : 
+                    dpName: fs_counters_Getattr
+                ReqQdepth : 
+                    dpName: fs_counters_ReqQdepth
+                MetaOps : 
+                    dpName: fs_counters_MetaOps
+                Mknod : 
+                    dpName: fs_counters_Mknod
+
+/Storage/DDN/Exascaler/ObjectStorageServer:
+    description: Performance Template for gathering metrics related to Exascaler OSS 
+    targetPythonClass: ZenPacks.DDN.Exascaler.OSS
+
+    datasources:
+        ossperf:
+            type : Python
+            cycletime: 600
+            plugin_classname: ZenPacks.DDN.Exascaler.dsplugin.OssPlugin
+            component: ${here/id}
+            eventKey: /perf/ExascalerOss
+            eventClass: /Perf
+            enabled: True
+            severity: Warning
+
+            datapoints:
+                Statfs : GAUGE
+                WriteBytes : GAUGE
+                Create : GAUGE
+                ReadBytes : GAUGE
+                Destroy: GAUGE
+    graphs:
+        IO:
+            units: bytes exchanged 
+            graphpoints:
+               ReadBytes:
+                   dpName: ossperf_ReadBytes
+               WrittenBytes:
+                   dpName: ossperf_WriteBytes
+
+        MetaOps:
+            units: number of operations
+            graphpoints:
+                Statfs:
+                    dpName: ossperf_Statfs
+                Create:
+                    dpName: ossperf_Create
+                Destroy:
+                    dpName: ossperf_Destroy

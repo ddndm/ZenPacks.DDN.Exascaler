@@ -1,0 +1,8 @@
+build
+dist
+.idea
+README.txt
+*.example
+*.egg-info
+*.pyc
+*.*~

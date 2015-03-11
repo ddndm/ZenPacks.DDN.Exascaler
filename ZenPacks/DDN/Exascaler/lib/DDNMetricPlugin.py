@@ -243,6 +243,24 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
 
         return aggregate
 
+    def onComplete(self, result, config):
+        """
+        Called last for success and error.
+ 
+        You can omit this method if you want the result of either the
+        onSuccess or onError method to be used without further processing.
+        """
+        self.cmd = []  # oncomplete: Clear the commands list bcoz it leads
+        # error while we run zenpython in background
+        return result
+
+    def cleanup(self, config):
+        """
+        Called when collector exits, or task is deleted or changed.
+        """
+        # log.debug("XXXX cleanup(self=%r, config=%r)", self, config)
+        # return
+
     def prepTask(self, config):
         """
          This has to be defined in subclass.

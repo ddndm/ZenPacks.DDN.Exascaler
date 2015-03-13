@@ -60,6 +60,11 @@ CFG = zenpacklib.ZenPackSpec(
                     'label': 'fs_list',
                     'order': 4.9,
                 },
+                'monitor_interval': {
+                    'label': 'monitor_interval',
+                    'order': 4.10,
+                },
+
             }
         },
 
@@ -124,42 +129,78 @@ CFG = zenpacklib.ZenPackSpec(
             'base': zenpacklib.Component,
             'label': 'MetaDataServer',
             'properties': {
-                'lnets': {
-                    'label': 'Lustre Networks',
+                'eth0_gateway': {
+                    'label': 'eth0_gateway',
                     'order': 4.0,
                 },
 
-                'nic_list': {
-                    'label': 'NIC List',
+                'eth0_ip': {
+                    'label': 'eth0_ip',
                     'order': 4.1,
                 },
 
-                'stonith_type': {
-                    'label': 'Stonith Type',
+                'eth0_netmask': {
+                    'label': 'eth0_netmask',
                     'order': 4.2,
                 },
 
-                'stonith_user': {
-                    'label': 'Stonith User',
+                'eth1_ip': {
+                    'label': 'eth1_ip',
                     'order': 4.3,
                 },
 
-                'nw_addr': {
-                    'label': 'Network Addresses',
+                'eth1_netmask': {
+                    'label': 'eth1_netmask',
                     'order': 4.4,
                 },
 
-                'stonith_primary_peers': {
-                    'label': 'Stonith Primary Peers',
+                'ipmi_ip_base': {
+                    'label': 'ipmi_ip_base',
                     'order': 4.5,
                 },
-                'management_address': {
-                    'label': 'Management Address',
+                'ipmi_netmask': {
+                    'label': 'ipmi_netmask',
                     'order': 4.6,
+                },
+                'lnets': {
+                    'label': 'lnets',
+                    'order': 4.7,
+                },
+
+                'nic_list': {
+                    'label': 'nic_list',
+                    'order': 4.8,
+                },
+
+                'nw_addr': {
+                    'label': 'nw_addr',
+                    'order': 4.8,
+                },
+
+                'stonith_pass': {
+                    'label': 'stonith_pass',
+                    'order': 4.10,
+                },
+
+                'stonith_primary_peers': {
+                    'label': 'stonith_primary_peers',
+                    'order': 4.11,
+                },
+                'stonith_type': {
+                    'label': 'stonith_type',
+                    'order': 4.12,
+                },
+                'stonith_user': {
+                    'label': 'stonith_user',
+                    'order': 4.13,
+                },
+                'management_address': {
+                    'label': 'management_address',
+                    'order': 4.14,
                 },
                 'status': {
                     'label': 'Status',
-                    'order': 4.7,
+                    'order': 4.15,
                 }
             }
         },
@@ -168,42 +209,82 @@ CFG = zenpacklib.ZenPackSpec(
             'base': zenpacklib.Component,
             'label': 'ObjectStorageServer',
             'properties': {
-                'lnets': {
-                    'label': 'Lustre Networks',
+                'eth0_gateway': {
+                    'label': 'eth0_gateway',
                     'order': 4.0,
                 },
 
-                'nic_list': {
-                    'label': 'NIC List',
+                'eth0_ip': {
+                    'label': 'eth0_ip',
                     'order': 4.1,
                 },
 
-                'stonith_type': {
-                    'label': 'Stonith Type',
+                'eth0_netmask': {
+                    'label': 'eth0_netmask',
                     'order': 4.2,
                 },
 
-                'stonith_user': {
-                    'label': 'Stonith User',
+                'eth1_ip': {
+                    'label': 'eth1_ip',
                     'order': 4.3,
                 },
 
-                'nw_addr': {
-                    'label': 'Network Addresses',
+                'eth1_netmask': {
+                    'label': 'eth1_netmask',
                     'order': 4.4,
                 },
 
-                'stonith_primary_peers': {
-                    'label': 'Stonith Primary Peers',
+                'ipmi_ip_base': {
+                    'label': 'ipmi_ip_base',
                     'order': 4.5,
                 },
-                'management_address': {
-                    'label': 'Management Address',
+                'ipmi_netmask': {
+                    'label': 'ipmi_netmask',
                     'order': 4.6,
+                },
+                'lnets': {
+                    'label': 'lnets',
+                    'order': 4.7,
+                },
+
+                'nic_list': {
+                    'label': 'nic_list',
+                    'order': 4.8,
+                },
+
+                'nw_addr': {
+                    'label': 'nw_addr',
+                    'order': 4.8,
+                },
+
+                'stonith_pass': {
+                    'label': 'stonith_pass',
+                    'order': 4.10,
+                },
+
+                'stonith_primary_peers': {
+                    'label': 'stonith_primary_peers',
+                    'order': 4.11,
+                },
+                'stonith_type': {
+                    'label': 'stonith_type',
+                    'order': 4.12,
+                },
+                'stonith_user': {
+                    'label': 'stonith_user',
+                    'order': 4.13,
+                },
+                'devesfs_ost_count': {
+                    'label': 'devesfs_ost_count',
+                    'order': 4.14,
+                },
+                'management_address': {
+                    'label': 'management_address',
+                    'order': 4.15,
                 },
                 'status': {
                     'label': 'Status',
-                    'order': 4.7,
+                    'order': 4.16,
                 }
             }
         },

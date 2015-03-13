@@ -14,7 +14,7 @@ class MdsPlugin(DDNMetricPlugin):
     # List of device attributes you'll need to do collection.
     @classmethod
     def params(cls, datasource, context):
-        log.debug("XXXX MdtPlugin params(cls=%r, datasource=%r, context=%r"
+        log.debug("XXXX Mds Plugin params(cls=%r, datasource=%r, context=%r"
                   % (cls, datasource, context))
         return {'target': context.management_address}
 
@@ -22,6 +22,24 @@ class MdsPlugin(DDNMetricPlugin):
         super(MdsPlugin, self).__init__()
         self.relname = 'metaDataServers'
         self.modname = 'ZenPacks.DDN.Exascaler.MetaDataServer'
+
+    def prepTask(self, config):
+        log.info("Collecting Metrics for Device __class__ : %s ",
+                 self.__class__.__name__)
+        cmds = [{
+                    'cmd': '/cm/shared/ddn/dm/exascaler/exascalermetrics.py',
+                    'parser': self.parseMdtResults,
+                    'filter': 'basic',
+                }, {
+                    'cmd': '/cm/shared/ddn/dm/exascaler/esHealthCheck.py',
+                    'parser': self.parseStatus,
+                    'filter': 'state',
+                }]
+
+        for c in cmds:
+            self.cmd.append(esc.Cmd(command=c['cmd'], template=c['filter'],
+                                    config=self.config, parser=c['parser']))
+        log.debug('XXX _prepMdsCommand(): self.cmd = %r', self.cmd)
 
 
     def parseMdtResults(self, results, notused):
@@ -36,7 +54,7 @@ class MdsPlugin(DDNMetricPlugin):
                         if self.conn_params['fsList'] in words[1]:
                             rkeys.append(words[1:])
         except Exception as e:
-            log.error('XXX parseMdtResults-Result comprehension failed %s',
+            log.error('XXX parse Mds Results-Result comprehension failed %s',
                       str(e))
             rkeys = []
 
@@ -46,17 +64,17 @@ class MdsPlugin(DDNMetricPlugin):
             component = component_key = ds.component
             if not component:
                 component_key = 'MDT'
-                log.debug('XXXX [Device] key is: None, ds.component %s',
+                log.debug('XXXX MDS [Device] key is: None, ds.component %s',
                           component_key)
             else:
-                log.debug('XXXX [Component] key is: %s, ds.component %s',
+                log.debug('XXXX MDS [Component] key is: %s, ds.component %s',
                           ds.component, component_key)
 
             dsresult = {}
             for point in ds.points:
                 key = point.dpName  # mdt_counters_MetaOps
                 ident = point.id  # MetaOps
-                log.debug("Key = %s ident = %s " % (key, ident))
+                log.debug("MSD Key = %s ident = %s " % (key, ident))
                 keystr = (component_key + '_' + ident).replace('-', '_')
                 val = 0  # extract this value from results!
                 try:
@@ -65,7 +83,7 @@ class MdsPlugin(DDNMetricPlugin):
                             val = word[1]
                             break
                 except Exception as e:
-                    log.debug('XXXX ds key %s lookup error - %s',
+                    log.debug('XXXX mds key %s lookup error - %s',
                               keystr, str(e))
                 dsresult[key] = val
             aggregate[component] = dsresult
@@ -81,28 +99,14 @@ class MdsPlugin(DDNMetricPlugin):
                 if len(words[0]) > 1:
                     status = words[0]
         except Exception as e:
-            log.error('XXX parseMdtResults-Result comprehension failed %s',
+            log.error('XXX parse Mds Results-Result comprehension failed %s',
                       str(e))
         return {'status': status}
 
-    def prepTask(self, config):
-        cmds = [{
-                    'cmd': '/cm/shared/ddn/dm/exascaler/exascalermetrics.py',
-                    'parser': self.parseMdtResults,
-                    'filter': 'basic',
-                }, {
-                    'cmd': '/cm/shared/ddn/dm/exascaler/esHealthCheck.py',
-                    'parser': self.parseStatus,
-                    'filter': 'state',
-                }]
-
-        for c in cmds:
-            self.cmd.append(esc.Cmd(command=c['cmd'], template=c['filter'],
-                                    config=self.config, parser=c['parser']))
-        log.debug('XXX _prepMdtCommand(): self.cmd = %r', self.cmd)
-
     def onSuccess(self, result, config):
-        log.debug('XXXX onSuccess: values is %s', str(result))
+        log.info("Successfully Collected Metrics for Device __class__ : %s ",
+                 self.__class__.__name__)
+        log.debug('XXXX mds onSuccess: values is %s', str(result))
         status = result.get('status', 'null')
         if status != 'null':
             del result['status']
@@ -138,7 +142,9 @@ class MdsPlugin(DDNMetricPlugin):
         return aggregate
 
     def onError(self, result, config):
-        log.debug("XXXX onError(self=%r, result=%r, config=%r)",
+        log.error("Failed to Collect Metrics for Device __class__ : %s ",
+                  self.__class__.__name__)
+        log.error("XXXX mds onError(self=%r, result=%r, config=%r)",
                   self, result.getErrorMessage(), config)
         aggregate = self.new_data()
         aggregate['events'] = [{
@@ -171,6 +177,24 @@ class OssPlugin(DDNMetricPlugin):
         self.relname = 'objectStorageServers'
         self.modname = 'ZenPacks.DDN.Exascaler.ObjectStorageServer'
 
+    def prepTask(self, config):
+        log.info("Collecting Metrics for Device __class__ : %s ",
+                 self.__class__.__name__)
+        cmds = [{
+                    'cmd': '/cm/shared/ddn/dm/exascaler/exascalermetrics.py',
+                    'parser': self.parseOssResults,
+                    'filter': 'basic',
+                }, {
+                    'cmd': '/cm/shared/ddn/dm/exascaler/esHealthCheck.py',
+                    'parser': self.parseStatus,
+                    'filter': 'state',
+                }]
+
+        for c in cmds:
+            self.cmd.append(esc.Cmd(command=c['cmd'], template=c['filter'],
+                                    config=self.config, parser=c['parser']))
+        log.debug('XXX _prepOssCommand(): self.cmd = %r', self.cmd)
+
     def parseOssResults(self, results, notused):
         """ parse the results for each datasource part of config """
         rlines = results.split('\n')
@@ -183,7 +207,7 @@ class OssPlugin(DDNMetricPlugin):
                         if self.conn_params['fsList'] in words[1]:
                             rkeys.append(words[1:])
         except Exception as e:
-            log.error('XXX parseMdtResults-Result comprehension failed %s',
+            log.error('XXX parseOssResults-Result comprehension failed %s',
                       str(e))
             rkeys = []
 
@@ -193,17 +217,17 @@ class OssPlugin(DDNMetricPlugin):
             component = component_key = ds.component
             if not component:
                 component_key = 'MDT'
-                log.debug('XXXX [Device] key is: None, ds.component %s',
+                log.debug('XXXX Oss [Device] key is: None, ds.component %s',
                           component_key)
             else:
-                log.debug('XXXX [Component] key is: %s, ds.component %s',
+                log.debug('XXXX Oss [Component] key is: %s, ds.component %s',
                           ds.component, component_key)
 
             dsresult = {}
             for point in ds.points:
                 key = point.dpName  # mdt_counters_MetaOps
                 ident = point.id  # MetaOps
-                log.debug("Key = %s ident = %s " % (key, ident))
+                log.debug("Oss Key = %s ident = %s " % (key, ident))
                 keystr = (component_key + '_' + ident).replace('-', '_')
                 val = 0  # extract this value from results!
                 try:
@@ -212,11 +236,11 @@ class OssPlugin(DDNMetricPlugin):
                             val = word[1]
                             break
                 except Exception as e:
-                    log.debug('XXXX ds key %s lookup error - %s',
+                    log.debug('XXXX Oss ds key %s lookup error - %s',
                               keystr, str(e))
                 dsresult[key] = val
             aggregate[component] = dsresult
-        log.debug('XXX result=%s', (str(aggregate)))
+        log.debug('XXX Oss result=%s', (str(aggregate)))
         return aggregate
 
 
@@ -233,24 +257,11 @@ class OssPlugin(DDNMetricPlugin):
                       str(e))
         return {'status': status}
 
-    def prepTask(self, config):
-        cmds = [{
-                    'cmd': '/cm/shared/ddn/dm/exascaler/exascalermetrics.py',
-                    'parser': self.parseOssResults,
-                    'filter': 'basic',
-                }, {
-                    'cmd': '/cm/shared/ddn/dm/exascaler/esHealthCheck.py',
-                    'parser': self.parseStatus,
-                    'filter': 'state',
-                }]
-
-        for c in cmds:
-            self.cmd.append(esc.Cmd(command=c['cmd'], template=c['filter'],
-                                    config=self.config, parser=c['parser']))
-        log.debug('XXX _prepOssCommand(): self.cmd = %r', self.cmd)
 
     def onSuccess(self, result, config):
-        log.debug('XXXX onSuccess: values is %s', str(result))
+        log.info("Successfully Collected Metrics for Device __class__ : %s ",
+                 self.__class__.__name__)
+        log.debug('XXXX Oss onSuccess: values is %s', str(result))
         status = result.get('status', 'null')
         if status != 'null':
             del result['status']
@@ -285,7 +296,9 @@ class OssPlugin(DDNMetricPlugin):
         return aggregate
 
     def onError(self, result, config):
-        log.debug("XXXX onError(self=%r, result=%r, config=%r)",
+        log.error("Failed to Collect Metrics for Device __class__ : %s ",
+                  self.__class__.__name__)
+        log.error("XXXX Oss onError(self=%r, result=%r, config=%r)",
                   self, result.getErrorMessage(), config)
         aggregate = self.new_data()
         aggregate['events'] = [{

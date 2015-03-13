@@ -151,6 +151,7 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
         This doesn't actually connect to the device.
         """
         conn_params = self.conn_params
+        log.info("Trying to Connect Exascaler Device : %s", self.config.id)
         log.debug("XXXX _connect instance %r, param %s",
                   self, str(conn_params))
 
@@ -174,6 +175,8 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
         """
         Callback called after a successful connect to the remote device.
         """
+        log.info("Successfully Connected to Exascaler Device : %s",
+                 self.config.id)
         log.debug("XXX _connectCallback with connection %r", connection)
         self._connection = connection  # objects of DDNNetworkLib.MySshClient
         self._connection._taskList.add(self)  # all tasks run over a conn
@@ -187,7 +190,8 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
         """
         Metric collection failed no other fallback option.
         """
-        log.debug("XXXX connectionFailed called for connection %r", msg)
+        log.warn("Failed to Connect with Exascaler device : %s",self.config.id)
+        log.warn("XXXX connectionFailed called for connection %r", msg)
         # invoke the errBack chain because connection has failed.
         self.err_connFailed = True
         if self._task_defer is not None:
@@ -227,7 +231,8 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
         method to be used without further processing. It recommended to
         implement this method to capture errors.
         """
-        log.debug("XXXX onError(self=%r, result=%r, config=%r)",
+        log.error("Failed to Connect with Exascaler device : %s",config.id)
+        log.error("XXXX onError(self=%r, result=%r, config=%r)",
                   self, result.getErrorMessage(), config)
         aggregate = self.new_data()
         aggregate['events'] = [{
@@ -250,6 +255,7 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
         You can omit this method if you want the result of either the
         onSuccess or onError method to be used without further processing.
         """
+        log.info("Successfully Connected to Exascaler Device : %s", config.id)
         self.cmd = []  # oncomplete: Clear the commands list bcoz it leads
         # error while we run zenpython in background
         return result

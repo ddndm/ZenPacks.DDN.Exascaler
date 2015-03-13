@@ -1,7 +1,7 @@
 /Storage/DDN/Exascaler/MetaDataServer:
     # Osp component level metrics definition
     description: Performance Template for gathering metrics related to Exascaler MetaData Server 
-    targetPythonClass: ZenPacks.DDN.Exascaler.MDS
+    targetPythonClass: ZenPacks.DDN.Exascaler.MetaDataServer
 
     datasources:
         fs_counters:
@@ -68,7 +68,7 @@
 
 /Storage/DDN/Exascaler/ObjectStorageServer:
     description: Performance Template for gathering metrics related to Exascaler OSS 
-    targetPythonClass: ZenPacks.DDN.Exascaler.OSS
+    targetPythonClass: ZenPacks.DDN.Exascaler.ObjectStorageServer
 
     datasources:
         ossperf:

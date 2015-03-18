@@ -46,9 +46,13 @@ class MdsPlugin(DDNMetricPlugin):
         """ parse the results for each datasource part of config """
         rlines = results.split('\n')
         rkeys = []
+        log.debug("XXX MDS rlines: %s", rlines)
+        errdict = {}
         try:
             for line in (rlines):
                 words = line.split(' ')
+                errdict['words'] = words
+                log.debug("XXX MDS words: %s", words)
                 if len(words) == 3:
                     if 'MDT' not in words[1]:
                         if self.conn_params['fsList'] in words[1]:
@@ -56,6 +60,8 @@ class MdsPlugin(DDNMetricPlugin):
         except Exception as e:
             log.error('XXX parse Mds Results-Result comprehension failed %s',
                       str(e))
+            log.warn("Error Rlines : %s", rlines)
+            log.warn("Error Dict : %s", errdict)
             rkeys = []
 
         aggregate = {}
@@ -99,7 +105,8 @@ class MdsPlugin(DDNMetricPlugin):
                 if len(words[0]) > 1:
                     status = words[0]
         except Exception as e:
-            log.error('XXX parse Mds Results-Result comprehension failed %s',
+            log.error('XXX parse Mds Results- Health Result comprehension '
+                      'failed %s',
                       str(e))
         return {'status': status}
 
@@ -199,9 +206,13 @@ class OssPlugin(DDNMetricPlugin):
         """ parse the results for each datasource part of config """
         rlines = results.split('\n')
         rkeys = []
+        log.debug("XXX OSS rlines: %s", rlines)
+        errdict = {}
         try:
             for line in (rlines):
                 words = line.split(' ')
+                errdict['words'] = words
+                log.debug("XXX OSS words: %s", words)
                 if len(words) == 3:
                     if 'OST' not in words[1]:
                         if self.conn_params['fsList'] in words[1]:
@@ -209,6 +220,8 @@ class OssPlugin(DDNMetricPlugin):
         except Exception as e:
             log.error('XXX parseOssResults-Result comprehension failed %s',
                       str(e))
+            log.warn("Error Rlines : %s", rlines)
+            log.warn("Error Dict : %s", errdict)
             rkeys = []
 
         aggregate = {}
@@ -253,7 +266,9 @@ class OssPlugin(DDNMetricPlugin):
                 if len(words[0]) > 1:
                     status = words[0]
         except Exception as e:
-            log.error('XXX parseOssResults-Result comprehension failed %s',
+            log.error('XXX parseOssResults- Health Result comprehension '
+                      'failed '
+                      '%s',
                       str(e))
         return {'status': status}
 

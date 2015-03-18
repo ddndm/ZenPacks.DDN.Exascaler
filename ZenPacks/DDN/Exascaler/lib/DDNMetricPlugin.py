@@ -78,9 +78,9 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
         You can omit this method from your implementation entirely if this
         default uniqueness behavior fits your needs. In many cases it will.
         """
-        log.info("XXXX config_key(cls=%r, datasource=%r, context=%r"
+        log.debug("XXXX config_key(cls=%r, datasource=%r, context=%r"
                  % (cls, datasource, context))
-        log.info("XXXX context: %r,Id:%s,title:%s" % (context, context.id,
+        log.debug("XXXX context: %r,Id:%s,title:%s" % (context, context.id,
                                                       context.title))
         return (
             context.id,  # component id
@@ -219,6 +219,8 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
         You should return a data structure with zero or more events, values
         and maps.
         """
+        log.info("Successfully Collected metrics for Exascaler Device : %s",
+                 self.config.id)
         log.debug("XXXX onSuccess(self=%r, result=%r, config=%r)",
                   self, result, config)
         return {'events': [{}], 'maps': [], 'values': result}
@@ -255,7 +257,10 @@ class DDNMetricPlugin(PythonDataSourcePlugin):
         You can omit this method if you want the result of either the
         onSuccess or onError method to be used without further processing.
         """
-        log.info("Successfully Connected to Exascaler Device : %s", config.id)
+        log.info("Oncomplete Successfully Collected Metrics for Exascaler "
+                 "Device : "
+                 "%s",
+                 config.id)
         self.cmd = []  # oncomplete: Clear the commands list bcoz it leads
         # error while we run zenpython in background
         return result

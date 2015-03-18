@@ -77,7 +77,6 @@ class ModelExaScaler(DDNModelPlugin):
 
                     # Update device attributes
                     d_attr = {}
-                    d_attr['id'] = self.config.id
                     devom = self.objectMap()
                     devom.updateFromDict(d_attr)
                     devom.updateFromDict(infoData.get('global'))

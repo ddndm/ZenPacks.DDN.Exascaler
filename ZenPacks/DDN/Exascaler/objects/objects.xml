@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 <objects>
-<!-- ('', 'zport', 'dmd', 'Devices', 'Storage') -->
-<object id='/zport/dmd/Devices/Storage' module='Products.ZenModel.DeviceClass' class='DeviceClass'>
-<object id='DDN' module='Products.ZenModel.DeviceClass' class='DeviceClass'>
-<object id='Exascaler' module='Products.ZenModel.DeviceClass' class='DeviceClass'>
+<!-- ('', 'zport', 'dmd', 'Devices', 'Storage', 'DDN', 'Exascaler') -->
+<object id='/zport/dmd/Devices/Storage/DDN/Exascaler' module='Products.ZenModel.DeviceClass' class='DeviceClass'>
 <property visible="True" type="lines" id="zDeviceTemplates" >
 []
 </property>
@@ -29,6 +27,18 @@ ZenPacks.DDN.Exascaler.ExascalerDevice
 </property>
 <property visible="True" type="string" id="zESOssNodes" >
 10.30.30.1
+</property>
+<property visible="True" type="int" id="zCollectorClientTimeout" >
+60
+</property>
+<property visible="True" type="float" id="zCommandCommandTimeout" >
+60.0
+</property>
+<property visible="True" type="float" id="zCommandLoginTimeout" >
+60.0
+</property>
+<property visible="True" type="float" id="zStatusConnectTimeout" >
+60.0
 </property>
 <tomanycont id='rrdTemplates'>
 <object id='MetaDataServer' module='Products.ZenModel.RRDTemplate' class='RRDTemplate'>
@@ -951,7 +961,5 @@ AVERAGE
 </tomanycont>
 </object>
 </tomanycont>
-</object>
-</object>
 </object>
 </objects>
